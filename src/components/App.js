@@ -7,9 +7,8 @@ function PlantPage() {
   const [plants, setPlants] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(""); // Error state for global errors
+  const [error, setError] = useState(""); 
 
-  // Fetch plants on mount
   useEffect(() => {
     fetch("http://localhost:6001/plants")
       .then((response) => {
@@ -29,28 +28,23 @@ function PlantPage() {
       });
   }, []);
 
-  // Filtered plants based on search query
   const filteredPlants = plants.filter((plant) =>
     plant.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Handle search query change
   const handleSearch = (query) => {
     setSearchQuery(query);
   };
 
-  // Add new plant (optimistic UI update)
   const handleAddPlant = (newPlant) => {
     setPlants((prevPlants) => [...prevPlants, newPlant]);
   };
 
-  // Delete plant (optimistic UI update)
   const handleDelete = (id) => {
     setPlants((prevPlants) => prevPlants.filter((plant) => plant.id !== id));
     fetch(`http://localhost:6001/plants/${id}`, { method: "DELETE" });
   };
 
-  // Update sold-out status (PATCH request)
   const handleSoldOutToggle = (id) => {
     const plantToUpdate = plants.find((plant) => plant.id === id);
     fetch(`http://localhost:6001/plants/${id}`, {
@@ -70,7 +64,6 @@ function PlantPage() {
       });
   };
 
-  // Update plant price (PATCH request)
   const handleUpdatePrice = (id, newPrice) => {
     fetch(`http://localhost:6001/plants/${id}`, {
       method: "PATCH",

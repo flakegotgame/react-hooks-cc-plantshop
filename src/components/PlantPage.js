@@ -6,10 +6,9 @@ import Search from "./Search";
 function PlantPage() {
   const [plants, setPlants] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(true); // Track loading state
-  const [error, setError] = useState(""); // Track errors
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(""); 
 
-  // Fetch plants when the component mounts
   useEffect(() => {
     fetch("http://localhost:6001/plants")
       .then((response) => {
@@ -23,18 +22,16 @@ function PlantPage() {
         setLoading(false);
       })
       .catch((error) => {
-        console.error(error); // Log any errors for debugging
+        console.error(error); 
         setError("Failed to load plants. Please try again.");
         setLoading(false);
       });
   }, []);
 
-  // Filter the plants based on the search query
   const filteredPlants = plants.filter((plant) =>
     plant.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Handle adding a new plant
   const handleAddPlant = (newPlant) => {
     setPlants((prevPlants) => [...prevPlants, newPlant]);
 
@@ -56,7 +53,6 @@ function PlantPage() {
       })
       .catch((error) => {
         console.error("Error adding new plant:", error);
-        // Rollback optimistically added plant in case of failure
         setPlants((prevPlants) =>
           prevPlants.filter((plant) => plant.id !== newPlant.id)
         );
@@ -64,12 +60,10 @@ function PlantPage() {
       });
   };
 
-  // Handle search query change
   const handleSearch = (query) => {
     setSearchQuery(query);
   };
 
-  // Handle deleting a plant
   const handleDelete = (id) => {
     setPlants((prevPlants) => prevPlants.filter((plant) => plant.id !== id));
 
@@ -84,7 +78,6 @@ function PlantPage() {
       })
       .catch((error) => {
         console.error("Error deleting plant:", error);
-        // Restore plant if delete fails
         setPlants((prevPlants) => [
           ...prevPlants,
           plants.find((plant) => plant.id === id),
@@ -93,7 +86,6 @@ function PlantPage() {
       });
   };
 
-  // Handle updating plant's sold-out status
   const handleSoldOutToggle = (id) => {
     const updatedPlants = plants.map((plant) =>
       plant.id === id ? { ...plant, sold_out: !plant.sold_out } : plant
@@ -120,7 +112,6 @@ function PlantPage() {
       })
       .catch((error) => {
         console.error("Error updating sold-out status:", error);
-        // Rollback the UI update in case of failure
         setPlants((prevPlants) =>
           prevPlants.map((plant) =>
             plant.id === id ? { ...plant, sold_out: !plant.sold_out } : plant
@@ -130,7 +121,6 @@ function PlantPage() {
       });
   };
 
-  // Handle updating plant price
   const handleUpdatePrice = (id, newPrice) => {
     const updatedPlants = plants.map((plant) =>
       plant.id === id ? { ...plant, price: newPrice } : plant
@@ -157,7 +147,6 @@ function PlantPage() {
       })
       .catch((error) => {
         console.error("Error updating price:", error);
-        // Rollback the price change in case of failure
         setPlants((prevPlants) =>
           prevPlants.map((plant) =>
             plant.id === id ? { ...plant, price: plant.price } : plant

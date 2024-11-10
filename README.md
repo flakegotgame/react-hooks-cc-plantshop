@@ -1,150 +1,95 @@
 # Phase 2 Code Challenge: Plantsy
 
-## Demo
+## Plantsy assistant
 
-Use this gif as an example of how the app should work.
+Plantsy is an admin dashboard for a plant store where you can manage plants by adding, searching, updating prices, marking plants as sold out, and deleting them. It’s a React-based application that communicates with a backend API.
 
-![Demo GIF](https://curriculum-content.s3.amazonaws.com/phase-2/react-hooks-mock-code-challenge-plantshop/plantsy_demo.gif)
+## Overview
 
-## Instructions
+Plantsy allows the user to:
 
-Welcome to Plantsy! You've been tasked with building out some features for the
-admin side of a plant store. The designers have put together the components and
-CSS. Now it's up to you to bring the features to life by adding stateful logic
-as well as persisting data to the backend via our API.
+1.View all plants available in the store.
+2.Add a new plant with details like name, image URL, and price.
+3.Search for plants by name to filter the available list.
+4.Mark plants as sold out or available.
+5.Update the price of a plant.
+6.Delete a plant from the inventory.
 
-Your job will be to make our app work according to the user stories you will
-find the [Core Deliverables](#Core-Deliverables) section.
+## Features
 
-## Setup
+1.View all plants on page load.
+2.Add new plants using a form.
+3.Search plants by name dynamically as you type.
+4.Mark plants as Sold Out or Available.
+5.Update plant prices and see changes reflected after refresh.
+6.Delete plants from the inventory
 
-1. Run `npm install` in your terminal.
-2. Run `npm run server`. This will run your backend on port `6001`.
-3. In a new terminal, run `npm start`.
+# To set up and run this project on your local machine, follow the steps below:
 
-Make sure to open [http://localhost:6001/plants](http://localhost:6001/plants)
-in the browser to verify that your backend is working before you proceed!
+## Prerequisites
 
-## Endpoints
+Before you begin, ensure that you have the following installed:
 
-The base URL for your backend is: `http://localhost:6001`
+Node.js (version 16 or higher)
+npm (Node package manager)
+json-server (for local API)
+Installation
+Clone the repository:
 
-## Core Deliverables
+bash
+Copy code
+git clone https://github.com/yourusername/plantsy.git
+Navigate to the project folder:
 
-As a user:
+bash
+Copy code
+cd plantsy
+Install dependencies:
 
-1. When the app starts, I can see all plants.
-2. I can add a new plant to the page by submitting the form.
-3. I can mark a plant as "sold out".
-4. I can search for plants by their name and see a filtered list of plants.
+### Run the following command to install the required dependencies:
 
-### Endpoints for Core Deliverables
+bash
+Copy code
+npm install
+Start the backend server:
 
-#### GET /plants
+### If you don't have json-server installed globally, you can install it via npm:
 
-Example Response:
+bash
+Copy code
+npm install -g json-server
+Then, you can start the backend server:
 
-```json
-[
-  {
-    "id": 1,
-    "name": "Aloe",
-    "image": "./images/aloe.jpg",
-    "price": 15.99
-  },
-  {
-    "id": 2,
-    "name": "ZZ Plant",
-    "image": "./images/zz-plant.jpg",
-    "price": 25.98
-  }
-]
-```
+bash
+Copy code
+npm run server
+This will start the backend server on port 6001.
 
-#### POST `/plants`
+Start the React development server:
 
-Required Headers:
+In another terminal window, run:
 
-```js
-{
-  "Content-Type": "application/json"
-}
-```
+bash
+Copy code
+npm start
+The app will be running at http://localhost:3000 in your browser.
 
-Request Object:
+## Usage
 
-```json
-{
-  "name": "string",
-  "image": "string",
-  "price": number
-}
-```
+Once everything is set up and running:
 
-Example Response:
+Home Page: The page will display all the available plants.
+Add a Plant: Use the form at the top to add a new plant. Enter the name, image URL, and price.
+Search for Plants: Use the search bar to filter plants by name.
+Update Plant: Click the "Update Price" button next to a plant to change its price.
+Mark as Sold Out: You can toggle the availability of a plant using the "Mark as Sold Out" button.
+Delete Plant: Click the "Delete" button next to a plant to remove it from the list.
 
-```json
-{
-  "id": 1,
-  "name": "Aloe",
-  "image": "./images/aloe.jpg",
-  "price": 15.99
-}
-```
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Advanced Deliverables
+## End of README.md
+. This file will guide users through the setup process and explain how to use the app.
 
-These deliverables are not required to pass the code challenge, but if you have
-the extra time, or even after the code challenge, they are a great way to
-stretch your skills.
 
-You'll have to add additional elements for these features. Feel free to style
-them however you see fit!
 
-> Note: If you are going to attempt these advanced deliverables, please be sure
-> to have a working commit with all the Core Deliverables first!
-
-As a user:
-
-1. I can update the price of a plant and still see the updated price after
-   refreshing the page.
-2. I can delete a plant and it is still gone when I refresh the page.
-
-### Endpoints for Advanced Deliverables
-
-#### PATCH /plants/:id
-
-Required Headers:
-
-```js
-{
-  "Content-Type": "application/json"
-}
-```
-
-Request Object:
-
-```json
-{
-  "price": number
-}
-```
-
-Example Response:
-
-```json
-{
-  "id": 1,
-  "name": "Aloe",
-  "image": "./images/aloe.jpg",
-  "price": 16.99
-}
-```
-
-#### DELETE /plants/:id
-
-Example Response:
-
-```json
-{}
-```
