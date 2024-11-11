@@ -2,19 +2,18 @@ import React, { useState, useEffect } from "react";
 import NewPlantForm from "./NewPlantForm";
 import PlantList from "./PlantList";
 import Search from "./Search";
+import '../index.css';// Import global CSS
 
-function PlantPage() {
+function App() {
   const [plants, setPlants] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(""); 
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:6001/plants")
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch plants");
-        }
+        if (!response.ok) throw new Error("Failed to fetch plants");
         return response.json();
       })
       .then((data) => {
@@ -32,12 +31,8 @@ function PlantPage() {
     plant.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-  };
-
   const handleAddPlant = (newPlant) => {
-    setPlants((prevPlants) => [...prevPlants, newPlant]);
+    setPlants([...plants, newPlant]);
   };
 
   const handleDelete = (id) => {
@@ -46,46 +41,36 @@ function PlantPage() {
   };
 
   const handleSoldOutToggle = (id) => {
-    const plantToUpdate = plants.find((plant) => plant.id === id);
+    const updatedPlants = plants.map((plant) =>
+      plant.id === id ? { ...plant, sold_out: !plant.sold_out } : plant
+    );
+    setPlants(updatedPlants);
     fetch(`http://localhost:6001/plants/${id}`, {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ sold_out: !plantToUpdate.sold_out }),
-    })
-      .then((response) => response.json())
-      .then((updatedPlant) => {
-        setPlants((prevPlants) =>
-          prevPlants.map((plant) =>
-            plant.id === updatedPlant.id ? updatedPlant : plant
-          )
-        );
-      });
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sold_out: !plants.find((plant) => plant.id === id).sold_out }),
+    });
   };
 
   const handleUpdatePrice = (id, newPrice) => {
+    const updatedPlants = plants.map((plant) =>
+      plant.id === id ? { ...plant, price: newPrice } : plant
+    );
+    setPlants(updatedPlants);
     fetch(`http://localhost:6001/plants/${id}`, {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ price: newPrice }),
-    })
-      .then((response) => response.json())
-      .then((updatedPlant) => {
-        setPlants((prevPlants) =>
-          prevPlants.map((plant) =>
-            plant.id === updatedPlant.id ? updatedPlant : plant
-          )
-        );
-      });
+    });
   };
 
   return (
-    <main>
+    <main className="app">
+      <header>
+        <h1 className="logo">Plantsy</h1>
+      </header>
       <NewPlantForm onAddPlant={handleAddPlant} />
-      <Search onSearch={handleSearch} />
+      <Search onSearch={setSearchQuery} />
       {loading ? (
         <p>Loading plants...</p>
       ) : (
@@ -101,5 +86,5 @@ function PlantPage() {
   );
 }
 
-export default PlantPage;
+export default App;
 

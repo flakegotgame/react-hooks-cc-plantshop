@@ -4,32 +4,18 @@ function NewPlantForm({ onAddPlant }) {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [price, setPrice] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name || !image || !price) {
-      setError("Please fill in all fields.");
-      return;
-    }
-
-    const parsedPrice = parseFloat(price);
-    if (isNaN(parsedPrice) || parsedPrice <= 0) {
-      setError("Please enter a valid price.");
-      return;
-    }
-
-    setError("");
+    if (!name || !image || isNaN(price) || price <= 0) return;
     setLoading(true);
 
-    const newPlant = { name, image, price: parsedPrice };
+    const newPlant = { name, image, price: parseFloat(price) };
 
     fetch("http://localhost:6001/plants", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newPlant),
     })
       .then((response) => response.json())
@@ -41,42 +27,21 @@ function NewPlantForm({ onAddPlant }) {
         setLoading(false);
       })
       .catch((error) => {
-        console.error(error);
-        setError("Failed to add plant. Please try again.");
+        console.error("Failed to add plant:", error);
         setLoading(false);
       });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Plant name"
-        required
-      />
-      <input
-        type="text"
-        value={image}
-        onChange={(e) => setImage(e.target.value)}
-        placeholder="Image URL"
-        required
-      />
-      <input
-        type="number"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-        placeholder="Price"
-        required
-      />
-      <button type="submit" disabled={loading}>
-        {loading ? "Adding Plant..." : "Add Plant"}
-      </button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-    </form>
+    <div className="new-plant-form">
+      <form onSubmit={handleSubmit}>
+        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Plant name" />
+        <input type="text" value={image} onChange={(e) => setImage(e.target.value)} placeholder="Image URL" />
+        <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price" />
+        <button type="submit" disabled={loading}>{loading ? "Adding Plant..." : "Add Plant"}</button>
+      </form>
+    </div>
   );
 }
 
 export default NewPlantForm;
-

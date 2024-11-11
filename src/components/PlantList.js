@@ -2,12 +2,8 @@ import React from "react";
 import PlantCard from "./PlantCard";
 
 function PlantList({ plants, onDelete, onSoldOutToggle, onUpdatePrice }) {
-  if (plants.length === 0) {
-    return <p>No plants available. Please add some!</p>;
-  }
-
-  return (
-    <ul>
+  return plants.length ? (
+    <ul className="cards">
       {plants.map((plant) => (
         <PlantCard
           key={plant.id}
@@ -18,9 +14,9 @@ function PlantList({ plants, onDelete, onSoldOutToggle, onUpdatePrice }) {
         />
       ))}
     </ul>
+  ) : (
+    <p>No plants available. Please add some!</p>
   );
 }
 
 export default PlantList;
-
-

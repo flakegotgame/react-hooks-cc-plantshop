@@ -1,18 +1,16 @@
 import React from "react";
 
 function Search({ onSearch }) {
-  const handleChange = (e) => {
-    onSearch(e.target.value);
-  };
-
   return (
     <input
+      className="searchbar"
       type="text"
       placeholder="Search for plants"
-      onChange={handleChange}
+      onChange={(e) => onSearch(e.target.value)}
     />
   );
 }
 
 export default Search;
+
 

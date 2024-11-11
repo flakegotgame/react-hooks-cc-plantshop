@@ -22,7 +22,8 @@
       "id": 4,
       "name": "Pothos",
       "image": "./images/pothos.jpg",
-      "price": 12.11
+      "price": 12.11,
+      "sold_out": false
     },
     {
       "id": 5,
